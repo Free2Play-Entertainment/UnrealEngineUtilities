@@ -17,6 +17,8 @@ public:
 	virtual void ShutdownModule() override;
 	
 	void RestartEditor();
+
+	void ReinitializeEditor();
 	
 private:
 

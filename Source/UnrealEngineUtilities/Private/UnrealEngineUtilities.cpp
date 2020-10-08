@@ -22,9 +22,16 @@ void FUnrealEngineUtilitiesModule::StartupModule()
 	PluginCommands = MakeShareable(new FUICommandList);
 
 	PluginCommands->MapAction(
-		FUnrealEngineUtilitiesCommands::Get().PluginAction,
+		FUnrealEngineUtilitiesCommands::Get().RestartAction,
 		FExecuteAction::CreateRaw(this, &FUnrealEngineUtilitiesModule::RestartEditor),
-		FCanExecuteAction());
+		FCanExecuteAction()
+	);
+	
+	PluginCommands->MapAction(
+		FUnrealEngineUtilitiesCommands::Get().ReinitAction,
+		FExecuteAction::CreateRaw(this, &FUnrealEngineUtilitiesModule::ReinitializeEditor),
+		FCanExecuteAction()
+	);
 
 	UToolMenus::RegisterStartupCallback(FSimpleMulticastDelegate::FDelegate::CreateRaw(this, &FUnrealEngineUtilitiesModule::RegisterMenus));
 }
@@ -45,6 +52,11 @@ void FUnrealEngineUtilitiesModule::ShutdownModule()
 
 void FUnrealEngineUtilitiesModule::RestartEditor()
 {
+	FUnrealEdMisc::Get().RestartEditor(false);
+}
+
+void FUnrealEngineUtilitiesModule::ReinitializeEditor()
+{
 	EditorReinit();
 }
 
@@ -57,11 +69,12 @@ void FUnrealEngineUtilitiesModule::RegisterMenus()
 		UToolMenu* Menu = UToolMenus::Get()->ExtendMenu("LevelEditor.MainMenu.File");
 		{
 			FToolMenuSection& Section = Menu->FindOrAddSection("Project");
-			Section.AddMenuEntryWithCommandList(FUnrealEngineUtilitiesCommands::Get().PluginAction, PluginCommands);
+			Section.AddMenuEntryWithCommandList(FUnrealEngineUtilitiesCommands::Get().RestartAction, PluginCommands);
+			Section.AddMenuEntryWithCommandList(FUnrealEngineUtilitiesCommands::Get().ReinitAction, PluginCommands);
 		}
 	}
 }
 
 #undef LOCTEXT_NAMESPACE
-	
+
 IMPLEMENT_MODULE(FUnrealEngineUtilitiesModule, UnrealEngineUtilities)

@@ -6,7 +6,8 @@
 
 void FUnrealEngineUtilitiesCommands::RegisterCommands()
 {
-	UI_COMMAND(PluginAction, "UnrealEngineUtilities", "Execute UnrealEngineUtilities action", EUserInterfaceActionType::Button, FInputGesture());
+	UI_COMMAND(RestartAction, "Restart", "Restart the Editor", EUserInterfaceActionType::Button, FInputGesture());
+	UI_COMMAND(ReinitAction, "Reinitialize", "Reinitialize the Editor", EUserInterfaceActionType::Button, FInputGesture());
 }
 
 #undef LOCTEXT_NAMESPACE
